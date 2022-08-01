@@ -4,17 +4,31 @@
     <meta charset="UTF-8">
     <title>华莱士排名神器</title>
     <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
         body{
             /*background: url("./img/img.png");*/
+            width: 100%;
         }
         .center {
             /*背景颜色*/
             background: white;
             /*宽度设置*/
-            width: 400px;
+            width: 100%;
             /*文本对齐方式*/
             /*外边距设置*/
             margin: auto;
+        }
+
+        #desc, #result {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            padding: 2px;
+            margin: 0 auto;
+            box-sizing: border-box;
         }
     </style>
 
@@ -179,16 +193,28 @@
     <br>
     <br>
     <br>
-    <br>
-    <br>
-    <br>
-    <br>
 </div>
 <div class="center">
-    
+    <div>
+        <label for="desc">华莱士排名神器</label></br>
+        <label for="desc">1. 安乐花园店专用，不需外借。</label></br>
+        </br>
+
+        <label for="desc">使用方法</label></br>
+        <label for="desc">1. 微信中多选聊天记录</label></br>
+        <label for="desc">2. 发送Email</label></br>
+        <label for="desc">3. 全选文本，复制</label></br>
+        <label for="desc">4. 打开本网址，输入第一个文本框</label></br>
+        <label for="desc">5. 点击解析</label></br>
+        <label for="desc">6. 复制排名好的数据，在微信群中粘贴。</label></br>
+        </br>
+        </br>
+        
+    </div>
+
     <div>
         <label for="desc">原始数据：</label>
-        <textarea name="desc" id="desc" cols="80" rows="20" placeholder=""></textarea>
+        <textarea name="desc" id="desc" cols="80" rows="20" placeholder="" autofocus="autofocus"></textarea>
     </div>
         
     </br>
