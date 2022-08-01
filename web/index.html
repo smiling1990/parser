@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>注册页面</title>
+    <title>解析页面</title>
     <style>
         body{
-            background: url("./img/img.png");
+            /*background: url("./img/img.png");*/
         }
         .center {
             /*背景颜色*/
@@ -13,11 +13,165 @@
             /*宽度设置*/
             width: 400px;
             /*文本对齐方式*/
-            text-align: center;
             /*外边距设置*/
             margin: auto;
         }
     </style>
+
+    <script>
+        function ItemModel(name, value, tc){
+            this.name = name;
+            this.value = value;
+            this.tc = tc;
+        }
+
+        function btnReset() { 
+            alert("Reset");
+            document.getElementById('desc').value = "";
+            document.getElementById('result').value = "";
+        }
+        function btnAction() { 
+            var text = document.getElementById('desc').value;
+            if (text == "") {
+                // alert("Empty");
+                return;
+            }
+
+            var cur = new Date();  
+            var year = cur.getFullYear();
+            var month = cur.getMonth() + 1;
+            var day = cur.getDay();
+            var hour = cur.getHours();
+            var minute = cur.getMinutes();
+
+
+            var hourMinute = ""
+            // alert(hour);
+
+            if(hour <= 15) {
+                hourMinute = "13:30";
+            } else if(hour >= 16 && hour <= 19) {
+                hourMinute = "14:30";
+            } else {
+                hourMinute = "20:30";
+            }
+
+            var resString = "餐厅";
+            var valueString = "营业额";
+
+            var split = "#.#";
+            var source = text.replace(/：/g, ":") // 中文冒号修改位应为冒号
+                        .replace(/，/g, ",") // 中文逗号修改位英文
+                        .replace(/∶/g, ":") // 冒号不一样
+                        .replace(/ /g, "") // 去除空格
+                        .replace(/\n/g, split) // 去除换行
+                        .replace(/南山/g, "")
+                        .replace(/安乐/g, "")
+                        .toUpperCase(); // 都换成大写
+
+            if(source.indexOf(resString) < 0) {
+                alert("Empty " + resString);
+                return;
+            }
+            // alert(source);
+
+            var itemModels = new Array();
+
+            while(source.indexOf(resString) >= 0) {
+                // Restaurant
+                source = source.substring(source.indexOf(resString))
+                var itemName = "";
+                if(source.startsWith(resString + ":")) {
+                    itemName = source.substring(resString.length + 1, source.indexOf(split)).trim()
+                } else if(source.startsWith(resString + ".")) {
+                    itemName = source.substring(resString.length + 1, source.indexOf(split)).trim()
+                } else if(source.startsWith(resString + ",")) {
+                    itemName = source.substring(resString.length + 1, source.indexOf(split)).trim()
+                } else {
+                    itemName = source.substring(resString.length, source.indexOf(split)).trim()
+                }
+                // Turnover
+                var itemValue = "";
+                source = source.substring(source.indexOf(valueString))
+                if(source.startsWith(valueString + ":")) {
+                    itemValue = source.substring(valueString.length + 1, source.indexOf(split)).trim()
+                } else if(source.startsWith(valueString + ".")) {
+                    itemValue = source.substring(valueString.length + 1, source.indexOf(split)).trim()
+                } else if(source.startsWith(valueString + ",")) {
+                    itemValue = source.substring(valueString.length + 1, source.indexOf(split)).trim()
+                } else {
+                    itemValue = source.substring(valueString.length, source.indexOf(split)).trim()
+                }
+                if (itemValue.includes(".")) {
+                    itemValue = itemValue.substring(0, itemValue.indexOf("."))
+                }
+                var valueInt = Number(itemValue);
+                // TC
+                var tcString = "TC";
+                var tcValue = "";
+                source = source.substring(source.indexOf(tcString))
+                if(source.startsWith(tcString + ":")) {
+                    tcValue = source.substring(tcString.length + 1, source.indexOf(split)).trim()
+                } else if(source.startsWith(tcString + ".")) {
+                    tcValue = source.substring(tcString.length + 1, source.indexOf(split)).trim()
+                } else if(source.startsWith(tcString + ",")) {
+                    tcValue = source.substring(tcString.length + 1, source.indexOf(split)).trim()
+                } else {
+                    tcValue = source.substring(tcString.length, source.indexOf(split)).trim()
+                }
+                if (tcValue.includes(".")) {
+                    tcValue = tcValue.substring(0, tcValue.indexOf("."))
+                }
+                var tcInt = Number(tcValue);
+
+                var item = new ItemModel(itemName, valueInt, tcInt);
+                itemModels.push(item);
+            }
+            // 排序
+            itemModels.sort(function(a,b){
+                return b.value - a.value;
+            });
+    
+            var ret = "梁伟滨区" + month + "月" + day + 
+                    "日" + hourMinute + "营业额排名\n";
+
+            var valuesTotal = 0;
+            var tcTotal = 0;
+
+            for(var i = 0; i < itemModels.length; i++) {
+                var name = itemModels[i].name;
+                var value = itemModels[i].value;
+                var tc = itemModels[i].tc;
+                ret = ret.concat(i + 1)
+                    .concat(". ")
+                    .concat(name)
+                    .concat(" " + value + " TC " + tc)
+                    .concat("\n")
+                    ;
+                valuesTotal = valuesTotal + value;
+                tcTotal = tcTotal + tc;
+            }
+
+            var numbers = itemModels.length;
+            var perValue = "" + valuesTotal / numbers;
+            if (perValue.includes(".")) {
+                perValue = perValue.substring(0, perValue.indexOf("."))
+            }
+            var perTc = ("" + tcTotal / numbers);
+            if (perTc.includes(".")) {
+                perTc = perTc.substring(0, perTc.indexOf("."))
+            }
+
+            ret = ret.concat("平均: ")
+                    .concat(perValue)
+                    .concat(" " + " TC " + perTc)
+                    .concat("\n") 
+                    ; 
+
+            document.getElementById('result').innerHTML = ret;
+        }
+    </script>
+
 </head>
 <body>
 <div>
@@ -30,80 +184,26 @@
     <br>
     <br>
 </div>
-<!--中间注册信息-->
 <div class="center">
-    <div>注册详情</div>
-    <hr>
-    <!--表单标签-->
-    <form action="#" method="get" autocomplete="off">
-        <div>
-            <label for="username">姓名：</label>
-            <input type="text" id="username" name="username" value="" placeholder="在此输入姓名" required/>
-        </div>
+    
+    <div>
+        <label for="desc">原始数据：</label>
+        <textarea name="desc" id="desc" cols="80" rows="20" placeholder=""></textarea>
+    </div>
+        
+    </br>
 
-        <div>
-            <label for="password">密码：</label>
-            <input type="password" id="password" name="password" value="" placeholder="在此输入密码" required/>
-        </div>
+    <div>
+        <button onclick="btnAction()"> 解析 </button>
+        <button onclick="btnReset()"> 重置 </button>
+    </div>
+    
+    </br>
 
-        <div>
-            <label for="email">邮箱：</label>
-            <input type="email" id="email" name="email" value="" placeholder="在此输入邮箱" required/>
-        </div>
+    <div>
+        <textarea name="result" id="result" cols="80" rows="20"></textarea>
+    </div>
 
-        <div>
-            <label for="sel">手机：</label>
-            <input type="sel" id="sel" name="sel" value="" placeholder="在此输入手机" required/>
-        </div>
-        <hr>
-
-        <div>
-            <label for="gender">性别：</label>
-            <input type="radio" id="gender" name="gender" value="men" />男 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="radio" name="gender" value="women" />女&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </div>
-
-        <div>
-            <label for="hobby">爱好：</label>
-            <input type="checkbox" id="hobby" name="hobby" value="music" />音乐
-            <input type="checkbox" name="hobby" value="movie" />电影
-            <input type="checkbox" name="hobby" value="game" />游戏
-        </div>
-
-        <div>
-            <label for="birthday">出生日期：</label>
-            <input type="date" id="birthday" name="birthday" value=""/>
-        </div>
-
-        <div>
-            <label for="city"> 所在城市：</label>
-            <select name="city"id="city">
-                <option>---请选择所在城市---</option>
-                <optgroup label="直辖市">
-                    <option>北京</option>
-                    <option>上海</option>
-                    <option>广州</option>
-                    <option>深圳</option>
-                </optgroup>
-                <optgroup label="省会市">
-                    <option>西安</option>
-                    <option>杭州</option>
-                    <option>郑州</option>
-                    <option>武汉</option>
-                </optgroup>
-            </select>
-        </div>
-        <hr>
-
-        <div>
-            <label for="desc">个性签名：</label>
-            <textarea name="desc" id="desc" cols="40" rows="5" placeholder="请写下您的与众不同"></textarea>
-        </div>
-        <hr>
-
-        <button type="submit">注册</button>
-        <button type="reset">重置</button>
-    </form>
 </div>
 </body>
 </html>
