@@ -72,6 +72,7 @@
                         .replace(/\n/g, split) // 去除换行
                         .replace(/南山/g, "")
                         .replace(/安乐/g, "")
+                        .replace(/店名/g, resString)
                         .toUpperCase(); // 都换成大写
 
             if(source.indexOf(resString) < 0) {
