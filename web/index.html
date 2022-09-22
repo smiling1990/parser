@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>华莱士排名神器</title>
+    <title>Error</title>
     <style>
         * {
             padding: 0;
@@ -23,161 +23,6 @@
         }
     </style>
 
-    <script>
-        function ItemModel(name, value, tc){
-            this.name = name;
-            this.value = value;
-            this.tc = tc;
-        }
-
-        function btnReset() { 
-            alert("Reset");
-            document.getElementById('desc').value = "";
-            document.getElementById('result').value = "";
-        }
-        function btnAction() { 
-            var text = document.getElementById('desc').value;
-            if (text == "") {
-                // alert("Empty");
-                return;
-            }
-
-            var cur = new Date();  
-            var year = cur.getFullYear();
-            var month = cur.getMonth() + 1;
-            var day = cur.getDate();
-            var hour = cur.getHours();
-            var minute = cur.getMinutes();
-
-
-            var hourMinute = ""
-            // alert(hour);
-
-            if(hour <= 15) {
-                hourMinute = "13:30";
-            } else if(hour >= 16 && hour <= 19) {
-                hourMinute = "16:30";
-            } else {
-                hourMinute = "20:30";
-            }
-
-            var resString = "餐厅";
-            var valueString = "营业额";
-
-            var split = "#.#";
-            var source = text.replace(/：/g, ":") // 中文冒号修改位应为冒号
-                        .replace(/，/g, ",") // 中文逗号修改位英文
-                        .replace(/∶/g, ":") // 冒号不一样
-                        .replace(/ /g, "") // 去除空格
-                        .replace(/\n/g, split) // 去除换行
-                        .replace(/南山/g, "")
-                        .replace(/安乐/g, "")
-                        .replace(/店名/g, resString)
-                        .toUpperCase(); // 都换成大写
-
-            if(source.indexOf(resString) < 0) {
-                alert("Empty " + resString);
-                return;
-            }
-            // alert(source);
-
-            var itemModels = new Array();
-
-            while(source.indexOf(resString) >= 0) {
-                // Restaurant
-                source = source.substring(source.indexOf(resString))
-                var itemName = "";
-                if(source.startsWith(resString + ":")) {
-                    itemName = source.substring(resString.length + 1, source.indexOf(split)).trim()
-                } else if(source.startsWith(resString + ".")) {
-                    itemName = source.substring(resString.length + 1, source.indexOf(split)).trim()
-                } else if(source.startsWith(resString + ",")) {
-                    itemName = source.substring(resString.length + 1, source.indexOf(split)).trim()
-                } else {
-                    itemName = source.substring(resString.length, source.indexOf(split)).trim()
-                }
-                // Turnover
-                var itemValue = "";
-                source = source.substring(source.indexOf(valueString))
-                if(source.startsWith(valueString + ":")) {
-                    itemValue = source.substring(valueString.length + 1, source.indexOf(split)).trim()
-                } else if(source.startsWith(valueString + ".")) {
-                    itemValue = source.substring(valueString.length + 1, source.indexOf(split)).trim()
-                } else if(source.startsWith(valueString + ",")) {
-                    itemValue = source.substring(valueString.length + 1, source.indexOf(split)).trim()
-                } else {
-                    itemValue = source.substring(valueString.length, source.indexOf(split)).trim()
-                }
-                if (itemValue.includes(".")) {
-                    itemValue = itemValue.substring(0, itemValue.indexOf("."))
-                }
-                var valueInt = Number(itemValue);
-                // TC
-                var tcString = "TC";
-                var tcValue = "";
-                source = source.substring(source.indexOf(tcString))
-                if(source.startsWith(tcString + ":")) {
-                    tcValue = source.substring(tcString.length + 1, source.indexOf(split)).trim()
-                } else if(source.startsWith(tcString + ".")) {
-                    tcValue = source.substring(tcString.length + 1, source.indexOf(split)).trim()
-                } else if(source.startsWith(tcString + ",")) {
-                    tcValue = source.substring(tcString.length + 1, source.indexOf(split)).trim()
-                } else {
-                    tcValue = source.substring(tcString.length, source.indexOf(split)).trim()
-                }
-                if (tcValue.includes(".")) {
-                    tcValue = tcValue.substring(0, tcValue.indexOf("."))
-                }
-                var tcInt = Number(tcValue);
-
-                var item = new ItemModel(itemName, valueInt, tcInt);
-                itemModels.push(item);
-            }
-            // 排序
-            itemModels.sort(function(a,b){
-                return b.value - a.value;
-            });
-    
-            var ret = "梁伟滨区" + month + "月" + day + 
-                    "日" + hourMinute + "营业额排名\n";
-
-            var valuesTotal = 0;
-            var tcTotal = 0;
-
-            for(var i = 0; i < itemModels.length; i++) {
-                var name = itemModels[i].name;
-                var value = itemModels[i].value;
-                var tc = itemModels[i].tc;
-                ret = ret.concat(i + 1)
-                    .concat(". ")
-                    .concat(name)
-                    .concat(" " + value + " TC " + tc)
-                    .concat("\n")
-                    ;
-                valuesTotal = valuesTotal + value;
-                tcTotal = tcTotal + tc;
-            }
-
-            var numbers = itemModels.length;
-            var perValue = "" + valuesTotal / numbers;
-            if (perValue.includes(".")) {
-                perValue = perValue.substring(0, perValue.indexOf("."))
-            }
-            var perTc = ("" + tcTotal / numbers);
-            if (perTc.includes(".")) {
-                perTc = perTc.substring(0, perTc.indexOf("."))
-            }
-
-            ret = ret.concat("平均: ")
-                    .concat(perValue)
-                    .concat(" " + " TC " + perTc)
-                    .concat("\n") 
-                    ; 
-
-            document.getElementById('result').innerHTML = ret;
-        }
-    </script>
-
 </head>
 <body>
 <div>
@@ -186,39 +31,12 @@
 </div>
 <div>
     <div>
-        <label>华莱士排名神器</label></br>
-        <label>1. 安乐花园店专用，不需外借。</label></br>
+        <label>发生错误，请联系管理员</label></br>
         </br>
 
-        <label>使用方法</label></br>
-        <label>1. 微信中多选聊天记录</label></br>
-        <label>2. 发送Email</label></br>
-        <label>3. 全选文本，复制</label></br>
-        <label>4. 打开本网址，输入第一个文本框</label></br>
-        <label>5. 点击解析</label></br>
-        <label>6. 复制排名好的数据，在微信群中粘贴。</label></br>
-        </br>
-        </br>
-
-    </div>
-
-    <div>
-        <label for="desc">原始数据：</label></br>
-        <textarea name="desc" id="desc" cols="30" rows="20" autofocus="autofocus"></textarea>
-    </div>
-        
-    </br>
-
-    <div>
-        <button onclick="btnAction()">解析</button>
-        <button onclick="btnReset()">重置</button>
     </div>
 
     </br>
-
-    <div>
-        <textarea name="result" id="result" cols="30" rows="15"></textarea>
-    </div>
 
     </br>
     </br>
